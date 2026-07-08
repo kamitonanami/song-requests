@@ -1,8 +1,8 @@
-Upload this index.html to your GitHub repository.
+Updated version for GitHub.
 
-This version:
-- keeps Nanami images embedded directly in the page
-- uses transparent PNG versions when available
-- automatically loads album/song covers online via iTunes Search API
-- keeps Dean photo for Carry On Wayward Son
-- does not require an assets folder
+Changes:
+- I Hate That I Made You Love Me artist fixed to Ariana Grande
+- Give Me Love removed
+- All By Myself by Celine Dion added
+
+Upload index.html to GitHub and overwrite the old one.
