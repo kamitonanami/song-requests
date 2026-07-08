@@ -1,7 +1,1 @@
-Nanami Song Requests
-
-Upload everything in this folder to your GitHub repository.
-Keep the assets folder next to index.html.
-
-GitHub Pages URL:
-https://kamitonanami.github.io/song-requests/
+Upload index.html to GitHub. This version has Nanami images embedded directly, so they cannot break. Song covers are loaded automatically online.
