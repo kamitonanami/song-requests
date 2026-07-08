@@ -6,24 +6,86 @@
 <title>Song Requests</title>
 <style>
 *{box-sizing:border-box}
-body{margin:0;font-family:Arial,sans-serif;background:#111;color:#fff}
-main{max-width:900px;margin:40px auto;padding:24px}
-.card{background:#222;border-radius:24px;padding:28px;box-shadow:0 18px 45px #0008}
-h1{color:#c58cff;font-size:44px;margin:0 0 14px}
-p{font-size:20px}
-input,select{width:100%;padding:16px;border-radius:12px;border:0;margin:8px 0;font-size:17px}
-.song{background:#302750;border-radius:14px;padding:14px;margin:10px 0;cursor:pointer}
-.song:hover{background:#453675}
-.meta{opacity:.8;margin-top:5px}
-#detail{margin-top:18px;background:#1a1a1a;border-radius:18px;padding:18px}
-button{border:0;border-radius:999px;padding:10px 14px;background:#ffffff22;color:white;cursor:pointer}
+:root{
+  --bg:#0c0814;--card:#1c1827;--card2:#2d2450;--text:#fff;--muted:#d9cff7;
+  --purple:#b983ff;--pink:#ff8fd6;--blue:#85e8ff;--gold:#ffd166;
+}
+body{
+  margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--text);
+  background:
+    radial-gradient(circle at 10% 10%,#5c3dab66,transparent 30%),
+    radial-gradient(circle at 90% 0%,#ff8fd655,transparent 25%),
+    linear-gradient(180deg,#0c0814,#151020 55%,#09070f);
+  min-height:100vh;
+}
+main{max-width:1050px;margin:0 auto;padding:22px}
+.hero{
+  position:relative;overflow:hidden;border-radius:30px;padding:34px;margin:18px 0 18px;
+  background:linear-gradient(135deg,#7b5cff,#ff8fd6);
+  box-shadow:0 22px 60px #0009;
+}
+.hero:after{
+  content:"♪ ♫ ✦ ♡";position:absolute;right:25px;top:20px;font-size:72px;opacity:.18;letter-spacing:10px;
+}
+h1{font-size:clamp(42px,8vw,78px);line-height:.95;margin:0 0 14px;text-shadow:0 5px 20px #0005}
+.hero p{font-size:22px;margin:0}
+.controls{display:grid;grid-template-columns:2fr 1fr 1fr;gap:12px;margin:16px 0}
+input,select{
+  width:100%;border:0;border-radius:18px;padding:16px 18px;font-size:17px;
+  background:#ffffff;color:#17121f;outline:3px solid transparent;
+}
+input:focus,select:focus{outline-color:var(--gold)}
+.stats{font-size:20px;color:var(--muted);margin:14px 4px}
+.layout{display:grid;grid-template-columns:1.25fr .85fr;gap:18px;align-items:start}
+#list{display:grid;gap:12px}
+.song{
+  border:0;width:100%;text-align:left;color:white;cursor:pointer;
+  background:linear-gradient(135deg,#2d2450,#382d68);
+  border-radius:22px;padding:14px;display:grid;grid-template-columns:70px 1fr auto;gap:14px;align-items:center;
+  box-shadow:0 10px 25px #0006;transition:.15s ease;
+}
+.song:hover{transform:translateY(-2px);background:linear-gradient(135deg,#3d3271,#51408f)}
+.cover{
+  width:70px;height:70px;border-radius:18px;display:grid;place-items:center;font-size:31px;
+  background:linear-gradient(135deg,var(--purple),var(--pink));box-shadow:inset 0 0 24px #ffffff3d;
+}
+.title{font-size:19px;font-weight:800}
+.meta{margin-top:5px;color:var(--muted);font-size:15px}
+.pill{display:inline-block;margin:5px 5px 0 0;padding:5px 9px;border-radius:999px;background:#ffffff17;color:#fff;font-size:13px}
+.duration{font-weight:800;color:#ffe6f6;white-space:nowrap}
+#detail{
+  position:sticky;top:16px;background:linear-gradient(135deg,#211b35,#171220);
+  border:1px solid #ffffff18;border-radius:28px;padding:22px;min-height:330px;box-shadow:0 18px 45px #0008;
+}
+.detail-cover{
+  width:100%;height:150px;border-radius:24px;display:grid;place-items:center;font-size:62px;margin-bottom:16px;
+  background:linear-gradient(135deg,#b983ff,#ff8fd6,#85e8ff);
+}
+#detail h2{margin:0 0 8px;color:#ffd5f0;font-size:30px}
+.copyBtn,.favBtn{
+  width:100%;border:0;border-radius:16px;padding:14px;margin-top:10px;font-size:16px;font-weight:800;cursor:pointer;color:white;
+}
+.copyBtn{background:linear-gradient(135deg,#8d6cff,#ff8fd6)}
+.favBtn{background:#ffffff1f}
+.toast{
+ position:fixed;left:50%;bottom:20px;transform:translateX(-50%);background:#191326;border:1px solid #ffffff33;
+ padding:14px 18px;border-radius:999px;box-shadow:0 8px 28px #0009;display:none;z-index:10;
+}
+.empty{padding:25px;border-radius:18px;background:#ffffff12;text-align:center;color:var(--muted)}
+@media(max-width:820px){
+ main{padding:14px}.controls,.layout{grid-template-columns:1fr}#detail{position:static}
+ .song{grid-template-columns:56px 1fr}.cover{width:56px;height:56px;border-radius:14px}.duration{grid-column:2}
+}
 </style>
 </head>
 <body>
 <main>
-<section class="card">
+<section class="hero">
 <h1>🎤 Song Requests</h1>
-<p>Choose a song 💜</p>
+<p>Choose a song, copy the request, and paste it into Twitch chat 💜</p>
+</section>
+
+<section class="controls">
 <input id="search" placeholder="Search song or artist...">
 <select id="difficulty">
 <option value="">All difficulties</option>
@@ -31,52 +93,125 @@ button{border:0;border-radius:999px;padding:10px 14px;background:#ffffff22;color
 <option>Medium</option>
 <option>Hard</option>
 </select>
-<p id="count"></p>
+<select id="sort">
+<option value="az">Sort A–Z</option>
+<option value="fav">Favorites first</option>
+<option value="difficulty">Sort by difficulty</option>
+<option value="duration">Sort by duration</option>
+</select>
+</section>
+
+<p id="count" class="stats"></p>
+
+<section class="layout">
 <div id="list"></div>
-<div id="detail"><b>Song details</b><br>Click a song to show details.</div>
+<aside id="detail">
+<div class="detail-cover">🦊🎵</div>
+<h2>Song details</h2>
+<p>Click a song to see details and copy the Twitch request command.</p>
+</aside>
 </section>
 </main>
+<div id="toast" class="toast"></div>
 
 <script>
-const songs = [{"id": 1, "title": "21 Guns", "artist": "Green Day", "difficulty": "Easy"}, {"id": 2, "title": "34+35", "artist": "Ariana Grande", "difficulty": "Easy"}, {"id": 3, "title": "APT.", "artist": "ROSÉ & Bruno Mars", "difficulty": "Easy"}, {"id": 4, "title": "Abracadabra", "artist": "Lady Gaga", "difficulty": "Medium"}, {"id": 5, "title": "Addicted to You", "artist": "Avicii", "difficulty": "Easy"}, {"id": 6, "title": "Adore You", "artist": "Harry Styles", "difficulty": "Easy"}, {"id": 7, "title": "All I Ask of You", "artist": "The Phantom of the Opera", "difficulty": "Medium"}, {"id": 8, "title": "American Idiot", "artist": "Green Day", "difficulty": "Medium"}, {"id": 9, "title": "Back to Black", "artist": "Amy Winehouse", "difficulty": "Easy"}, {"id": 10, "title": "Bad Romance", "artist": "Lady Gaga", "difficulty": "Medium"}, {"id": 11, "title": "Basket Case", "artist": "Green Day", "difficulty": "Easy"}, {"id": 12, "title": "Birds of a Feather", "artist": "Billie Eilish", "difficulty": "Easy"}, {"id": 13, "title": "Boulevard of Broken Dreams", "artist": "Green Day", "difficulty": "Easy"}, {"id": 14, "title": "Complicated", "artist": "Avril Lavigne", "difficulty": "Easy"}, {"id": 15, "title": "Dangerous Woman", "artist": "Ariana Grande", "difficulty": "Hard"}, {"id": 16, "title": "Decode", "artist": "Paramore", "difficulty": "Easy"}, {"id": 17, "title": "Die For You", "artist": "The Weeknd & Ariana Grande", "difficulty": "Medium"}, {"id": 18, "title": "Don't Speak", "artist": "No Doubt", "difficulty": "Easy"}, {"id": 19, "title": "Easy On Me", "artist": "Adele", "difficulty": "Easy"}, {"id": 20, "title": "Espresso", "artist": "Sabrina Carpenter", "difficulty": "Medium"}, {"id": 21, "title": "Falling", "artist": "Harry Styles", "difficulty": "Easy"}, {"id": 22, "title": "From the Start", "artist": "Laufey", "difficulty": "Easy"}, {"id": 23, "title": "God Is a Woman", "artist": "Ariana Grande", "difficulty": "Medium"}, {"id": 24, "title": "Holiday", "artist": "Green Day", "difficulty": "Easy"}, {"id": 25, "title": "In the End", "artist": "Linkin Park", "difficulty": "Easy"}, {"id": 26, "title": "Iris", "artist": "Goo Goo Dolls", "difficulty": "Easy"}, {"id": 27, "title": "It Will Rain", "artist": "Bruno Mars", "difficulty": "Easy"}, {"id": 28, "title": "Jolene", "artist": "Dolly Parton", "difficulty": "Easy"}, {"id": 29, "title": "Juno", "artist": "Sabrina Carpenter", "difficulty": "Medium"}, {"id": 30, "title": "My Future", "artist": "Billie Eilish", "difficulty": "Easy"}, {"id": 31, "title": "My Love", "artist": "Sia", "difficulty": "Medium"}, {"id": 32, "title": "No One Mourns the Wicked", "artist": "Wicked", "difficulty": "Hard"}, {"id": 33, "title": "Numb", "artist": "Linkin Park", "difficulty": "Easy"}, {"id": 34, "title": "Olivia", "artist": "One Direction", "difficulty": "Easy"}, {"id": 35, "title": "POV", "artist": "Ariana Grande", "difficulty": "Medium"}, {"id": 36, "title": "Popular", "artist": "Wicked", "difficulty": "Medium"}, {"id": 37, "title": "Positions", "artist": "Ariana Grande", "difficulty": "Easy"}, {"id": 38, "title": "Reflection", "artist": "Mulan", "difficulty": "Easy"}, {"id": 39, "title": "Riptide", "artist": "Vance Joy", "difficulty": "Easy"}, {"id": 40, "title": "Shallow", "artist": "Lady Gaga & Bradley Cooper", "difficulty": "Medium"}, {"id": 41, "title": "Sign of the Times", "artist": "Harry Styles", "difficulty": "Medium"}, {"id": 42, "title": "Someone Like You", "artist": "Adele", "difficulty": "Easy"}, {"id": 43, "title": "Still Into You", "artist": "Paramore", "difficulty": "Medium"}, {"id": 44, "title": "Talking to the Moon", "artist": "Bruno Mars", "difficulty": "Easy"}, {"id": 45, "title": "Teenage Dream", "artist": "Katy Perry", "difficulty": "Easy"}, {"id": 46, "title": "Thank U, Next", "artist": "Ariana Grande", "difficulty": "Hard"}, {"id": 47, "title": "The Scientist", "artist": "Coldplay", "difficulty": "Easy"}, {"id": 48, "title": "Unconditionally", "artist": "Katy Perry", "difficulty": "Easy"}, {"id": 49, "title": "Uptown Funk", "artist": "Mark Ronson ft. Bruno Mars", "difficulty": "Medium"}, {"id": 50, "title": "Vampire", "artist": "Olivia Rodrigo", "difficulty": "Medium"}, {"id": 51, "title": "Wake Me Up When September Ends", "artist": "Green Day", "difficulty": "Easy"}, {"id": 52, "title": "Wonderwall", "artist": "Oasis", "difficulty": "Easy"}, {"id": 53, "title": "Your Man", "artist": "Josh Turner", "difficulty": "Easy"}, {"id": 54, "title": "abcdefu", "artist": "GAYLE", "difficulty": "Easy"}];
+const songs = [{"id": 1, "title": "21 Guns", "artist": "Green Day", "difficulty": "Easy", "duration": "5:21"}, {"id": 2, "title": "34+35", "artist": "Ariana Grande", "difficulty": "Easy", "duration": "2:53"}, {"id": 3, "title": "9 to 5", "artist": "Dolly Parton", "difficulty": "Medium", "duration": "2:44"}, {"id": 4, "title": "A Million Dreams", "artist": "The Greatest Showman", "difficulty": "Easy", "duration": "4:29"}, {"id": 5, "title": "abcdefu", "artist": "GAYLE", "difficulty": "Easy", "duration": "2:48"}, {"id": 6, "title": "Abracadabra", "artist": "Lady Gaga", "difficulty": "Medium", "duration": "3:43"}, {"id": 7, "title": "Addicted to You", "artist": "Avicii", "difficulty": "Easy", "duration": "2:28"}, {"id": 8, "title": "Adore You", "artist": "Harry Styles", "difficulty": "Easy", "duration": "3:27"}, {"id": 9, "title": "Ain’t No Doubt About It", "artist": "ZOMBIES", "difficulty": "Easy", "duration": "3:02"}, {"id": 10, "title": "All I Ask of You", "artist": "The Phantom of the Opera", "difficulty": "Medium", "duration": "4:12"}, {"id": 11, "title": "All the Small Things", "artist": "blink-182", "difficulty": "Easy", "duration": "2:48"}, {"id": 12, "title": "Almost Is Never Enough", "artist": "Ariana Grande", "difficulty": "Medium", "duration": "5:28"}, {"id": 13, "title": "American Idiot", "artist": "Green Day", "difficulty": "Medium", "duration": "2:54"}, {"id": 14, "title": "APT.", "artist": "ROSÉ & Bruno Mars", "difficulty": "Easy", "duration": "2:49"}, {"id": 15, "title": "Arcade", "artist": "Duncan Laurence", "difficulty": "Easy", "duration": "3:05"}, {"id": 16, "title": "Back to Black", "artist": "Amy Winehouse", "difficulty": "Easy", "duration": "4:01"}, {"id": 17, "title": "Bad Romance", "artist": "Lady Gaga", "difficulty": "Medium", "duration": "4:54"}, {"id": 18, "title": "Basket Case", "artist": "Green Day", "difficulty": "Easy", "duration": "3:01"}, {"id": 19, "title": "Birds of a Feather", "artist": "Billie Eilish", "difficulty": "Easy", "duration": "3:30"}, {"id": 20, "title": "Bones", "artist": "Imagine Dragons", "difficulty": "Medium", "duration": "2:45"}, {"id": 21, "title": "Boulevard of Broken Dreams", "artist": "Green Day", "difficulty": "Easy", "duration": "4:20"}, {"id": 22, "title": "Burn It All Down", "artist": "PVRIS", "difficulty": "Hard", "duration": "3:37"}, {"id": 23, "title": "Careless Whisper", "artist": "George Michael", "difficulty": "Easy", "duration": "5:00"}, {"id": 24, "title": "Carry On Wayward Son", "artist": "Kansas", "difficulty": "Easy", "duration": "5:23"}, {"id": 25, "title": "Close to You", "artist": "The Carpenters", "difficulty": "Easy", "duration": "3:40"}, {"id": 26, "title": "Come As You Are", "artist": "Nirvana", "difficulty": "Easy", "duration": "3:39"}, {"id": 27, "title": "Complicated", "artist": "Avril Lavigne", "difficulty": "Easy", "duration": "4:05"}, {"id": 28, "title": "Cupid (Twin Version)", "artist": "FIFTY FIFTY", "difficulty": "Easy", "duration": "2:54"}, {"id": 29, "title": "Dangerous Woman", "artist": "Ariana Grande", "difficulty": "Hard", "duration": "3:55"}, {"id": 30, "title": "Decode", "artist": "Paramore", "difficulty": "Easy", "duration": "4:21"}, {"id": 31, "title": "Die For You", "artist": "The Weeknd & Ariana Grande", "difficulty": "Medium", "duration": "4:20"}, {"id": 32, "title": "Die With a Smile", "artist": "Lady Gaga & Bruno Mars", "difficulty": "Medium", "duration": "4:11"}, {"id": 33, "title": "Don’t Speak", "artist": "No Doubt", "difficulty": "Easy", "duration": "4:23"}, {"id": 34, "title": "Don’t Stop Believin’", "artist": "Journey", "difficulty": "Medium", "duration": "4:11"}, {"id": 35, "title": "Dream On", "artist": "Aerosmith", "difficulty": "Hard", "duration": "4:28"}, {"id": 36, "title": "Easy On Me", "artist": "Adele", "difficulty": "Easy", "duration": "3:44"}, {"id": 37, "title": "Espresso", "artist": "Sabrina Carpenter", "difficulty": "Medium", "duration": "2:55"}, {"id": 38, "title": "Eyes on Fire", "artist": "Blue Foundation", "difficulty": "Easy", "duration": "5:01"}, {"id": 39, "title": "Falling", "artist": "Harry Styles", "difficulty": "Easy", "duration": "4:00"}, {"id": 40, "title": "Feather", "artist": "Sabrina Carpenter", "difficulty": "Medium", "duration": "3:05"}, {"id": 41, "title": "Flightless Bird, American Mouth", "artist": "Iron & Wine", "difficulty": "Easy", "duration": "4:02"}, {"id": 42, "title": "From the Start", "artist": "Laufey", "difficulty": "Easy", "duration": "2:49"}, {"id": 43, "title": "Get Jinxed", "artist": "League of Legends", "difficulty": "Easy", "duration": "2:34"}, {"id": 44, "title": "Give Me Love", "artist": "Ed Sheeran", "difficulty": "Easy", "duration": "8:46"}, {"id": 45, "title": "Gives You Hell", "artist": "The All-American Rejects", "difficulty": "Easy", "duration": "3:33"}, {"id": 46, "title": "God Is a Woman", "artist": "Ariana Grande", "difficulty": "Medium", "duration": "3:17"}, {"id": 47, "title": "Hard Times", "artist": "Paramore", "difficulty": "Medium", "duration": "3:02"}, {"id": 48, "title": "High Hopes", "artist": "Kodaline", "difficulty": "Medium", "duration": "3:50"}, {"id": 49, "title": "Holiday", "artist": "Green Day", "difficulty": "Easy", "duration": "3:52"}, {"id": 50, "title": "I Hate That I Made You Love Me", "artist": "Unknown", "difficulty": "Hard", "duration": "3:34"}, {"id": 51, "title": "I Will Always Love You", "artist": "Whitney Houston", "difficulty": "Hard", "duration": "4:31"}, {"id": 52, "title": "Imperfect for You", "artist": "Ariana Grande", "difficulty": "Medium", "duration": "3:03"}, {"id": 53, "title": "In the End", "artist": "Linkin Park", "difficulty": "Easy", "duration": "3:36"}, {"id": 54, "title": "Iris", "artist": "Goo Goo Dolls", "difficulty": "Easy", "duration": "4:49"}, {"id": 55, "title": "It Will Rain", "artist": "Bruno Mars", "difficulty": "Easy", "duration": "4:17"}, {"id": 56, "title": "Jolene", "artist": "Dolly Parton", "difficulty": "Easy", "duration": "2:42"}, {"id": 57, "title": "Juno", "artist": "Sabrina Carpenter", "difficulty": "Medium", "duration": "3:43"}, {"id": 58, "title": "Kiss Me", "artist": "Sixpence None the Richer", "difficulty": "Easy", "duration": "3:28"}, {"id": 59, "title": "Legends Never Die", "artist": "Against the Current", "difficulty": "Medium", "duration": "3:55"}, {"id": 60, "title": "Love Me Again", "artist": "John Newman", "difficulty": "Easy", "duration": "3:59"}, {"id": 61, "title": "Love Me Harder", "artist": "Ariana Grande & The Weeknd", "difficulty": "Medium", "duration": "3:56"}, {"id": 62, "title": "Lullaby of Woe", "artist": "Ashley Serena", "difficulty": "Easy", "duration": "2:40"}, {"id": 63, "title": "Lush Life", "artist": "Zara Larsson", "difficulty": "Easy", "duration": "3:21"}, {"id": 64, "title": "My Future", "artist": "Billie Eilish", "difficulty": "Easy", "duration": "3:30"}, {"id": 65, "title": "My Love", "artist": "Sia", "difficulty": "Medium", "duration": "5:10"}, {"id": 66, "title": "Mystical Magical", "artist": "Benson Boone", "difficulty": "Medium", "duration": "3:12"}, {"id": 67, "title": "No One Mourns the Wicked", "artist": "Wicked", "difficulty": "Hard", "duration": "6:41"}, {"id": 68, "title": "Nonsense", "artist": "Sabrina Carpenter", "difficulty": "Medium", "duration": "2:43"}, {"id": 69, "title": "Numb", "artist": "Linkin Park", "difficulty": "Easy", "duration": "3:07"}, {"id": 70, "title": "Olivia", "artist": "One Direction", "difficulty": "Easy", "duration": "2:57"}, {"id": 71, "title": "Outside", "artist": "Calvin Harris & Ellie Goulding", "difficulty": "Easy", "duration": "3:47"}, {"id": 72, "title": "Over the Rainbow", "artist": "Judy Garland", "difficulty": "Easy", "duration": "2:45"}, {"id": 73, "title": "Please Please Please", "artist": "Sabrina Carpenter", "difficulty": "Medium", "duration": "3:06"}, {"id": 74, "title": "Popular", "artist": "Wicked", "difficulty": "Medium", "duration": "3:44"}, {"id": 75, "title": "Positions", "artist": "Ariana Grande", "difficulty": "Easy", "duration": "2:52"}, {"id": 76, "title": "Possibility", "artist": "Lykke Li", "difficulty": "Easy", "duration": "5:06"}, {"id": 77, "title": "POV", "artist": "Ariana Grande", "difficulty": "Medium", "duration": "3:21"}, {"id": 78, "title": "Reflection", "artist": "Mulan", "difficulty": "Easy", "duration": "2:27"}, {"id": 79, "title": "Riptide", "artist": "Vance Joy", "difficulty": "Easy", "duration": "3:24"}, {"id": 80, "title": "Say Something", "artist": "A Great Big World & Christina Aguilera", "difficulty": "Easy", "duration": "3:49"}, {"id": 81, "title": "Seven", "artist": "Jung Kook ft. Latto", "difficulty": "Easy", "duration": "3:04"}, {"id": 82, "title": "Shallow", "artist": "Lady Gaga & Bradley Cooper", "difficulty": "Medium", "duration": "3:36"}, {"id": 83, "title": "Side to Side", "artist": "Ariana Grande ft. Nicki Minaj", "difficulty": "Medium", "duration": "3:46"}, {"id": 84, "title": "Sign of the Times", "artist": "Harry Styles", "difficulty": "Medium", "duration": "5:41"}, {"id": 85, "title": "Since U Been Gone", "artist": "Kelly Clarkson", "difficulty": "Medium", "duration": "3:08"}, {"id": 86, "title": "Skinny Love", "artist": "Birdy", "difficulty": "Easy", "duration": "3:21"}, {"id": 87, "title": "Someone Like You", "artist": "Adele", "difficulty": "Easy", "duration": "4:45"}, {"id": 88, "title": "Sorry Not Sorry", "artist": "Demi Lovato", "difficulty": "Medium", "duration": "3:23"}, {"id": 89, "title": "Stay With Me", "artist": "Miki Matsubara", "difficulty": "Easy", "duration": "5:13"}, {"id": 90, "title": "Still Into You", "artist": "Paramore", "difficulty": "Medium", "duration": "3:36"}, {"id": 91, "title": "Stuck with U", "artist": "Ariana Grande & Justin Bieber", "difficulty": "Easy", "duration": "3:48"}, {"id": 92, "title": "Talking to the Moon", "artist": "Bruno Mars", "difficulty": "Easy", "duration": "3:37"}, {"id": 93, "title": "Taste", "artist": "Sabrina Carpenter", "difficulty": "Medium", "duration": "2:37"}, {"id": 94, "title": "Teenage Dirtbag", "artist": "Wheatus", "difficulty": "Easy", "duration": "4:01"}, {"id": 95, "title": "Teenage Dream", "artist": "Katy Perry", "difficulty": "Easy", "duration": "3:47"}, {"id": 96, "title": "Thank U, Next", "artist": "Ariana Grande", "difficulty": "Hard", "duration": "3:27"}, {"id": 97, "title": "The Boy Is Mine", "artist": "Ariana Grande", "difficulty": "Medium", "duration": "2:53"}, {"id": 98, "title": "The Scientist", "artist": "Coldplay", "difficulty": "Easy", "duration": "5:09"}, {"id": 99, "title": "The Wolven Storm", "artist": "The Witcher 3", "difficulty": "Medium", "duration": "3:16"}, {"id": 100, "title": "Toss a Coin to Your Witcher", "artist": "The Witcher 3", "difficulty": "Medium", "duration": "3:10"}, {"id": 101, "title": "Turning Page", "artist": "Sleeping At Last", "difficulty": "Easy", "duration": "4:15"}, {"id": 102, "title": "Unconditionally", "artist": "Katy Perry", "difficulty": "Easy", "duration": "3:48"}, {"id": 103, "title": "Uptown Funk", "artist": "Mark Ronson ft. Bruno Mars", "difficulty": "Medium", "duration": "4:30"}, {"id": 104, "title": "Vampire", "artist": "Olivia Rodrigo", "difficulty": "Medium", "duration": "3:39"}, {"id": 105, "title": "VILLAIN", "artist": "K/DA", "difficulty": "Medium", "duration": "3:19"}, {"id": 106, "title": "Wake Me Up When September Ends", "artist": "Green Day", "difficulty": "Easy", "duration": "4:45"}, {"id": 107, "title": "Warriors", "artist": "Imagine Dragons", "difficulty": "Medium", "duration": "2:50"}, {"id": 108, "title": "We Can’t Be Friends", "artist": "Ariana Grande", "difficulty": "Easy", "duration": "3:48"}, {"id": 109, "title": "What I’ve Been Looking For", "artist": "High School Musical", "difficulty": "Medium", "duration": "2:04"}, {"id": 110, "title": "Wonderwall", "artist": "Oasis", "difficulty": "Easy", "duration": "4:18"}, {"id": 111, "title": "yes, and?", "artist": "Ariana Grande", "difficulty": "Easy", "duration": "3:35"}, {"id": 112, "title": "Your Man", "artist": "Josh Turner", "difficulty": "Easy", "duration": "3:31"}];
 const list = document.getElementById('list');
 const search = document.getElementById('search');
 const difficulty = document.getElementById('difficulty');
+const sort = document.getElementById('sort');
 const count = document.getElementById('count');
 const detail = document.getElementById('detail');
+const toast = document.getElementById('toast');
 let favorites = JSON.parse(localStorage.getItem('song_favorites') || '[]');
+const rank = {Easy:1, Medium:2, Hard:3};
+const icons = ['🎤','🎧','🎵','💜','✨','🌙','🦊','🎼','⭐','💿'];
 
-function isFav(id){ return favorites.includes(id); }
-function saveFav(){ localStorage.setItem('song_favorites', JSON.stringify(favorites)); }
+function isFav(id){return favorites.includes(id)}
+function saveFav(){localStorage.setItem('song_favorites', JSON.stringify(favorites))}
+function durationToSeconds(d){const p=d.split(':').map(Number); return p[0]*60+p[1];}
+function iconFor(song){return icons[song.id % icons.length];}
+
+function showToast(text){
+  toast.textContent = text;
+  toast.style.display = 'block';
+  setTimeout(()=>toast.style.display='none', 2200);
+}
+
 function toggleFav(id){
-  favorites = isFav(id) ? favorites.filter(x => x !== id) : [...favorites, id];
+  favorites = isFav(id) ? favorites.filter(x=>x!==id) : [...favorites,id];
   saveFav();
   render();
+  const s = songs.find(x=>x.id===id);
+  if(s) showDetail(s);
+}
+
+function copyRequest(song){
+  const text = '!sr ' + song.title + ' - ' + song.artist;
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(text).then(()=>showToast('Copied: ' + text));
+  } else {
+    prompt('Copy this request:', text);
+  }
+}
+
+function filtered(){
+  const q = search.value.toLowerCase().trim();
+  let data = songs.filter(s =>
+    (!difficulty.value || s.difficulty === difficulty.value) &&
+    (s.title + ' ' + s.artist + ' ' + s.difficulty + ' ' + s.duration).toLowerCase().includes(q)
+  );
+
+  if(sort.value === 'fav') data.sort((a,b)=>Number(isFav(b.id))-Number(isFav(a.id)) || a.title.localeCompare(b.title));
+  else if(sort.value === 'difficulty') data.sort((a,b)=>rank[a.difficulty]-rank[b.difficulty] || a.title.localeCompare(b.title));
+  else if(sort.value === 'duration') data.sort((a,b)=>durationToSeconds(a.duration)-durationToSeconds(b.duration));
+  else data.sort((a,b)=>a.title.localeCompare(b.title));
+
+  return data;
 }
 
 function render(){
-  const q = search.value.toLowerCase().trim();
-  const data = songs.filter(s =>
-    (!difficulty.value || s.difficulty === difficulty.value) &&
-    (s.title + ' ' + s.artist + ' ' + s.difficulty).toLowerCase().includes(q)
-  ).sort((a,b) => a.title.localeCompare(b.title));
-
+  const data = filtered();
   count.textContent = data.length + ' / ' + songs.length + ' songs';
   list.innerHTML = '';
-
-  data.forEach(s => {
-    const div = document.createElement('div');
+  if(!data.length){
+    list.innerHTML = '<div class="empty">No songs found.</div>';
+    return;
+  }
+  data.forEach(s=>{
+    const div = document.createElement('button');
     div.className = 'song';
-    div.innerHTML = '<b>' + (isFav(s.id) ? '⭐ ' : '☆ ') + s.title + '</b><div class="meta">' + s.artist + ' • ' + s.difficulty + '</div>';
-    div.onclick = () => {
-      detail.innerHTML = '<h2>' + s.title + '</h2><p><b>Artist:</b> ' + s.artist + '</p><p><b>Difficulty:</b> ' + s.difficulty + '</p><button onclick="event.stopPropagation(); toggleFav(' + s.id + ')">' + (isFav(s.id) ? '⭐ Remove from favorites' : '☆ Add to favorites') + '</button>';
-    };
+    div.innerHTML = `
+      <div class="cover">${iconFor(s)}</div>
+      <div>
+        <div class="title">${isFav(s.id) ? '⭐ ' : '☆ '}${s.title}</div>
+        <div class="meta">${s.artist}</div>
+        <span class="pill">${s.difficulty}</span><span class="pill">⏱ ${s.duration}</span>
+      </div>
+      <div class="duration">${s.duration}</div>
+    `;
+    div.onclick = () => showDetail(s);
     list.appendChild(div);
   });
 }
 
+function showDetail(s){
+  detail.innerHTML = `
+    <div class="detail-cover">${iconFor(s)}</div>
+    <h2>${s.title}</h2>
+    <p><b>Artist:</b> ${s.artist}</p>
+    <p><b>Difficulty:</b> ${s.difficulty}</p>
+    <p><b>Duration:</b> ${s.duration}</p>
+    <p><b>Twitch command:</b><br><code>!sr ${s.title} - ${s.artist}</code></p>
+    <button class="copyBtn" onclick='copyRequest(${JSON.stringify(s)})'>📋 Copy Request</button>
+    <button class="favBtn" onclick="toggleFav(${s.id})">${isFav(s.id) ? '⭐ Remove from favorites' : '☆ Add to favorites'}</button>
+  `;
+}
+
 search.addEventListener('input', render);
 difficulty.addEventListener('change', render);
+sort.addEventListener('change', render);
+window.copyRequest = copyRequest;
 window.toggleFav = toggleFav;
 render();
 </script>
