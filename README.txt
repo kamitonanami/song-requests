@@ -1,1 +1,8 @@
-Upload index.html to GitHub. This version has Nanami images embedded directly, so they cannot break. Song covers are loaded automatically online.
+Upload this index.html to your GitHub repository.
+
+This version:
+- keeps Nanami images embedded directly in the page
+- uses transparent PNG versions when available
+- automatically loads album/song covers online via iTunes Search API
+- keeps Dean photo for Carry On Wayward Son
+- does not require an assets folder
