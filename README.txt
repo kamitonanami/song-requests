@@ -1,3 +1,12 @@
-Updated for Twitch redeem.
-Copy button now copies: Artist - Song Title
-Example: Ariana Grande - the boy is mine
+Quick upload version for GitHub.
+
+New:
+- Copy Song copies: Artist - Song
+- Rules match Twitch redeem system
+- Clark links added
+- Preview button added through iTunes preview when available
+- Vibe/category filter added
+- Song vibe tags added
+- All in one index.html
+
+Upload only index.html and overwrite the old one.
