@@ -1,1 +1,5 @@
-Upload index.html to GitHub and replace the old one. This clean version fixes the missing songs and corrects the 1-4 request rules.
+Nanami Song Requests – Updated GitHub Version
+
+Total songs: 122
+
+Upload index.html to GitHub and overwrite the old one.
